@@ -37,7 +37,7 @@ def againdeal(x,y):
 	s=str(re.findall("<p class=\"first\">.*</p>",information))
 	g=g.replace("<h1 class=\"headline\">","")
 	g=g.replace("</h1>","")
-	g=g.replacce("\\u3000","",20) #\u3000是代表全形空白，而要取代時要變成\\才會有\出來！
+	g=g.replace("\\u3000","",20) #\u3000是代表全形空白，而要取代時要變成\\才會有\出來！
 	r=r.replace("<span class=\"provider org\">","")
 	r=r.replace("</span>","")
 	t=t.replace(">","<",10) #這比較麻煩，因為後面有會變的數，所以來分割（而其中第3項會是要的答案）
