@@ -24,6 +24,14 @@ dealstr(m)
 try_list=[number for number in range(0,len(list))] #這是要用來存class的，裡面內容放數字，反正用完後內容也是無法用的
 y=0 #這是用來當引數來存進class的，所以底下會每次加1
 
+class news:
+        def __init__(self,topic,writer,date,test):
+                self.topic=topic
+                self.writer=writer
+                self.date=date
+                self.test=test
+
+
 def againdeal(x,y):
 	import requests #爬分頁的網
 	nextweb=requests.get("https://tw.news.yahoo.com/"+str(x)+"html")
@@ -59,9 +67,3 @@ for i in list:
     againdeal(i,y)
         
 
-class news:
-        def __init__(self,topic,writer,date,test):
-                self.topic=topic
-                self.writer=writer
-                self.date=date
-                self.test=test
