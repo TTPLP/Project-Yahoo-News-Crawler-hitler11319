@@ -1,9 +1,9 @@
 import requests 
 import re
+import new
 
-url_list = []    
+url_list = []
 class_list = []
-y = 0
 
 def dealstr(url):
     get_url = []
@@ -14,55 +14,46 @@ def dealstr(url):
     # get the url ,  because it have 2 floor , so use 2 for. And get the url store in url_list
     for item in url: 
         for it in range(0, len(item)):
-            if item[it][-1] =  = ".":
-                get_url.append(item[it]) 
+            if item[it][-1] == ".":
+                get_url.append(item[it])
 
     return get_url
 
 
 def againdeal(): 
+    #deal with data, and store the "store" into class , next:use append add to store_class , findally return
+    store_class = []
 
-    h1 = re.compile("<h1 class = \"headline\">.*</h1>")
-    span = re.compile("<span class = \"provider org\">.*</span>")
-    abbr = re.compile("<abbr title = .*</abbr>")
-    p = re.compile("<p class = \"first\">.*</p>")
+    h1 = re.compile("<h1 class=\"headline\">.*</h1>")
+    span = re.compile("<span class=\"provider org\">.*</span>")
+    abbr = re.compile("<abbr title=.*</abbr>")
+    p = re.compile("<p class=\"first\">.*</p>|<p>.*</p>")        #It is very difficult thought for a long, but can be found with union
 
     for url in url_list:
-	   nextweb = requests.get("https://tw.news.yahoo.com/"+str(url)+"html")
-	   nextweb.encoding = "utf-8"
-	   information = nextweb.text
+       nextweb = requests.get("https://tw.news.yahoo.com/"+str(url)+"html")
+       nextweb.encoding = "utf-8"
+       information = nextweb.text
 
-	    #uer "str" ,  because list not use 
-	   topic = str(h1.findall(information))
-	   author = str(span.findall(information))
-	   date = str(abbr.findall(information))
-	   test = str(p.findall(information))
+        #uer "str" ,  because list not use 
+       topic = str(h1.findall(information))
+       author = str(span.findall(information))
+       date = str(abbr.findall(information))
+       test = str(p.findall(information))
 
 
-	   topic = topic.replace("<h1 class = \"headline\">", "").replace("</h1>", "").replace("\\u3000", "", 20).replace("╱", "", 10) 
+       topic = topic.replace("<h1 class=\"headline\">", "").replace("</h1>", "").replace("\\u3000", "", 20).replace("╱", "", 10) 
 
-	   author = author.replace("<span class = \"provider org\">", "").replace("</span>", "")
+       author = author.replace("<span class=\"provider org\">", "").replace("</span>", "")
 
-	   date = date.replace(">", "<", 10).split("<")       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
-	   date = date[2]
+       date = date.replace(">", "<", 10).split("<")       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
+       date = date[2]
 
-	   test = test.replace("<p class = \"first\">", "").replace("</p>", "", 100).replace(" ", "", 100).replace("<p>", "", 100)
+       test = test.replace("<p class=\"first\">", "").replace("</p>", "", 100).replace(" ", "", 100).replace("<p>", "", 100)
 
-	   class_list+ = news(topic, author, date, test) 
-
-class news:
-    def __init__(self, topic, author, date, test):
-        self.topic = topic
-        self.author = author
-        self.date = date
-        self.test = test
-    def __str__(self):
-    	return "topic:{topic} \n author:{author} \n date:{date} \n test:{test} ".format(
-    		topic  =  self.topic,  
-    		author  =  self.author,  
-    		date  =  self.date,  
-    		test  =  self.test)
-
+       store = new.news(topic, author, date, test)
+       store_class.append(store)
+       
+    return store_class
 
 
 firstweb = requests.get("https://tw.news.yahoo.com/society/")
@@ -70,11 +61,8 @@ firstweb.encoding = "utf-8"
 book = firstweb.text
 
 
-m = re.findall('<a href = \"/.*html\" class = \"title \"', book) 
-
+m = re.findall('<a href=\"/.*html\" class=\"title \"', book) 
 
 url_list = dealstr(m)
 
-againdeal()
-
-        
+class_list = againdeal()
