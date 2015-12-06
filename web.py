@@ -56,13 +56,14 @@ def againdeal():
     return store_class
 
 
-firstweb = requests.get("https://tw.news.yahoo.com/society/")
-firstweb.encoding = "utf-8"
-book = firstweb.text
+if __name__ == "__main__":
+    firstweb = requests.get("https://tw.news.yahoo.com/society/")
+    firstweb.encoding = "utf-8"
+    book = firstweb.text
 
 
-m = re.findall('<a href=\"/.*html\" class=\"title \"', book) 
+    m = re.findall('<a href=\"/.*html\" class=\"title \"', book) 
 
-url_list = dealstr(m)
+    url_list = dealstr(m)
 
-class_list = againdeal()
+    class_list = againdeal()
