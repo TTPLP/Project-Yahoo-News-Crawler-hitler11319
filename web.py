@@ -35,20 +35,10 @@ def againdeal():
        information = nextweb.text
 
         #uer "str" ,  because list not use 
-       topic = str(h1.findall(information))
-       author = str(span.findall(information))
-       date = str(abbr.findall(information))
-       test = str(p.findall(information))
-
-
-       topic = topic.replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10) 
-
-       author = author.replace('<span class=\"provider org\">', '').replace('</span>', '')
-
-       date = date.replace('>', '<', 10).split('<')       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
-       date = date[2]
-
-       test = test.replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
+       topic = str(h1.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
+       author = str(span.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
+       date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
+       test = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
        store_class.append(new.news(topic, author, date, test))
     
