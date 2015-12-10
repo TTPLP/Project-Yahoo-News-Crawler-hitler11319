@@ -57,6 +57,6 @@ if __name__ == '__main__':
     url_list = dealstr(m)
 
     class_list = againdeal()
-    
+
 
 
