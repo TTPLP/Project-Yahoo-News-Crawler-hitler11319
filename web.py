@@ -31,23 +31,21 @@ def againdeal():
     p = re.compile('<p class=\"first\">.*</p>|<p>.*</p>')        #It is very difficult thought for a long, but can be found with union
 
     for url in url_list:
-       nextweb = requests.get('https://tw.news.yahoo.com/' + str(url) + 'html')
-       nextweb.encoding = 'utf-8'
-       information = nextweb.text
+        nextweb = requests.get('https://tw.news.yahoo.com/' + str(url) + 'html')
+        nextweb.encoding = 'utf-8'
+        information = nextweb.text
 
         #uer "str" ,  because list not use 
-       topic = str(h1.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
-       author = str(span.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
-       date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
-       test = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
+        topic = str(h1.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
+        author = str(span.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
+        date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
+        test = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
-       store_class.append(new.news(topic, author, date, test))
+        store_class.append(New.news(topic, author, date, test))
     
     return store_class
 
-
-if __name__ == '__main__':
-
+def main():
     firstweb = requests.get('https://tw.news.yahoo.com/society/')
     firstweb.encoding = 'utf-8'
     book = firstweb.text
@@ -58,6 +56,11 @@ if __name__ == '__main__':
     url_list = dealstr(m)
 
     class_list = againdeal()
+
+
+if __name__ == '__main__':
+    main()
+
 
 
 
