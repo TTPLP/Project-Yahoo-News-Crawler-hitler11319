@@ -1,6 +1,6 @@
 import datetime
 
-class news:
+class News:
     def __init__(self, topic, author, date, test):
 
         #Let hr 2 digits, and if it is in the afternoon, then to plus 12 hours again
