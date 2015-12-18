@@ -3,16 +3,16 @@
 
 
 # 安裝步驟
-- 1.先安裝python3
-- 2.裝上python pip3和requests、virtualenv（套件）
+ 1. 先安裝python3
+ 2. 裝上python pip3和requests（詳情版本請看requirements.txt）
 
 
 # 使用步驟
 - 直接會輸出檔案，但是因為yahoo的新聞會一直更新，所以看結果的時候特別留意。
+- 當開始執行時，請使用web.py來執行
 
 
 # 使用到的套件與版本
-- 1.python3
-- 2.pip3
-- 3.requests
-- 4.virtualenv
+- python3
+- pip3
+- requests
