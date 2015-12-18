@@ -1,7 +1,6 @@
 import requests 
 import re
-import News
-import datetime
+import news
 
 url_list = []
 class_list = []
@@ -21,7 +20,7 @@ def dealstr(url):
     return get_url
 
 
-def againdeal(): 
+def againdeal(url_list): 
     #deal with data, use append add to store_class , findally return
     store_class = []
 
@@ -41,7 +40,7 @@ def againdeal():
         date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
         test = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
-        store_class.append(News.News(topic, author, date, test))
+        store_class.append(news.News(topic, author, date, test))
     
     return store_class
 
@@ -55,7 +54,7 @@ def main():
 
     url_list = dealstr(m)
 
-    class_list = againdeal()
+    class_list = againdeal(url_list)
 
 
 if __name__ == '__main__':
