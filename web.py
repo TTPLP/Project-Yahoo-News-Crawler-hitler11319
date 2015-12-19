@@ -29,7 +29,10 @@ def change_time_format(date):
         date = date[0:14] + "0" + date[14:]
 
     if date[12] == "下":
-        date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
+        if date[14:16] == "12":
+            date = date[0:14] + "00" + date[16:19]
+        else:
+            date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
 
     return date
 
@@ -75,11 +78,15 @@ def main():
 
     class_list = againdeal(url_list)
 
-    #如果要輸出的話，因為它是一個陣列的型式，所以要這樣子輸出:
-    #for i in range(0,len(class_list.new)):
-        #print(class_list.new[i].__str__()) 
+    #The results are output in the js file and outputs the captured Ikunori News
+    output = open("result.json", "wt")
+
+    for i in range(0,len(class_list.new)):
+        output.write(class_list.new[i].__str__())
+        print("第", (i+1), "則新聞已擷取完")
+
+    output.close()
 
 if __name__ == '__main__':
     main()
-
 
