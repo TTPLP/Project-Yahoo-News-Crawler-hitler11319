@@ -1,20 +1,12 @@
-import datetime
 
 class News:
-    def __init__(self, topic, author, date, text):
-
-        #Let hr 2 digits, and if it is in the afternoon, then to plus 12 hours again
-        if date.index(":") - date.index("午") == 2:
-            date = date[0:14] + "0" + date[14:18]
-
-        if date[12] == "下":
-            date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
-
+    def __init__(self, topic, author, date, time, text):
+        import datetime
 
         self.topic = topic
         self.author = author
         self.date = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10]))
-        self.time = datetime.time(int(date[14:16]), int(date[17:18]), 0)
+        self.time = datetime.time(int(time[0:2]), int(time[3:]), 0)
         self.text = text
 
 
@@ -26,3 +18,5 @@ class News:
             time = self.time,  
             text  =  self.text
         )
+
+
