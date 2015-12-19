@@ -2,9 +2,6 @@ import requests
 import re
 import news
 
-url_list = []
-class_list = []
-
 def dealstr(url):
     get_url = []
     # this is use "html" and " "/  " to split the str ,  let me gain the url(ps:but get the data is[[1, 2], [2, 3]] ,  so have 2 floor )
@@ -18,6 +15,23 @@ def dealstr(url):
                 get_url.append(item[it])
 
     return get_url
+
+
+def change_time_format(date):
+    #Let hr and month and day have 2 digits, and if it is in the afternoon, then to plus 12 hours again
+    if date.index("月") - date.index("年") ==2:
+        date = date[0:5] + "0" + date[5:] 
+
+    if date.index("日") - date.index("月") ==2:
+        date = date[0:8] + "0" + date[8:]
+
+    if date.index(":") - date.index("午") == 2:
+        date = date[0:14] + "0" + date[14:]
+
+    if date[12] == "下":
+        date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
+
+    return date
 
 
 def againdeal(url_list): 
@@ -40,11 +54,16 @@ def againdeal(url_list):
         date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
         text = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
-        store_class.append(news.News(topic, author, date, text))
+        date = change_time_format(date)
+
+        store_class.append(news.News(topic, author, date[0:11], date[14:], text))
     
     return store_class
 
 def main():
+    url_list = []
+    class_list = []
+
     firstweb = requests.get('https://tw.news.yahoo.com/society/')
     firstweb.encoding = 'utf-8'
     book = firstweb.text
@@ -59,7 +78,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
 
 
