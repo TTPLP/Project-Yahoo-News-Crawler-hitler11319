@@ -36,7 +36,7 @@ def change_time_format(date):
 
 def againdeal(url_list): 
     #deal with data, use append add to store_class , findally return
-    store_class = []
+    store_class = news.List_news()
 
     h1 = re.compile('<h1 class=\"headline\">.*</h1>')
     span = re.compile('<span class=\"provider org\">.*</span>')
@@ -75,9 +75,11 @@ def main():
 
     class_list = againdeal(url_list)
 
+    #如果要輸出的話，因為它是一個陣列的型式，所以要這樣子輸出:
+    #for i in range(0,len(class_list.new)):
+        #print(class_list.new[i].__str__()) 
 
 if __name__ == '__main__':
     main()
-
 
 
