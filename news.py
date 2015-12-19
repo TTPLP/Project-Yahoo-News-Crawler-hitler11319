@@ -1,4 +1,5 @@
 
+
 class News:
     def __init__(self, topic, author, date, time, text):
         import datetime
@@ -19,4 +20,14 @@ class News:
             text  =  self.text
         )
 
+class List_news:
+    def __init__(self):
+        self.new = []
+
+    def append(self, data):
+        self.new.append(date)
+        return self.new
+
+    def len(self):
+        return len(self.new)
 
