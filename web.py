@@ -1,6 +1,7 @@
 import requests 
 import re
 import news
+import datetime
 
 def dealstr(url):
     get_url = []
@@ -63,7 +64,7 @@ def againdeal(url_list, output):
 
         date = change_time_format(date)
 
-        store_class.append(news.News(topic, author, date[0:11], date[14:], text))
+        store_class.append(news.News(topic, author, datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10])), datetime.time(int(date[14:16]), int(date[17:]), 0), text))
 
         #The results are output in the js file and outputs the captured Ikunori News
         output.write(store_class.new[i - 1].__str__())
