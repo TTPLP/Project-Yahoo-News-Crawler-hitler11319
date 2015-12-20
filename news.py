@@ -1,13 +1,14 @@
-
 class News:
     def __init__(self, topic, author, date, time, text):
+
         import datetime
 
-        self.topic = topic
-        self.author = author
-        self.date = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10]))
-        self.time = datetime.time(int(time[0:2]), int(time[3:]), 0)
-        self.text = text
+        if type(date) == datetime.date and type(time) == datetime.time :
+            self.topic = topic
+            self.author = author
+            self.date = date
+            self.time = time
+            self.text = text
 
 
     def __str__(self):
@@ -19,7 +20,7 @@ class News:
             text  =  self.text
         )
 
-class List_news(List):
+class List_news():
     def __init__(self):
         self.new = []
 
@@ -29,6 +30,9 @@ class List_news(List):
 
     def len(self):
         return len(self.new)
+
+    def fitler(self):
+        pass
 
     def fitler(self):
         pass
