@@ -1,3 +1,4 @@
+
 class News:
     def __init__(self, topic, author, date, time, text):
 
@@ -31,8 +32,30 @@ class List_news():
     def len(self):
         return len(self.new)
 
-    def fitler(self):
-        pass
+    def search_author(self, goal):
+        output = open(goal + ".txt", "wt")
 
-    def fitler(self):
-        pass
+        for y in self.new:
+            if y.author == goal:
+                output.write(y.__str__())
+
+        output.close()
+
+    def search_time(self, goal_date):
+
+        import datetime
+        import time
+
+        if type(date) == datetime.date:
+
+            before_time = open ("before " + str(date) + ".txt", "wt")
+            after_time = open ("after " + str(date) + ".txt", "wt")
+
+            for y in self.new:
+                if time.mktime(goal_date.timetuple()) > time.mktime(y.date.timetuple()):
+                    before_time.write(y.__str__())
+                elif time.mktime(goal_date.timetuple()) < time.mktime(y.date.timetuple()):
+                    after_time.write(y.__str__())
+
+            before_time.close()
+            after_time.close()
