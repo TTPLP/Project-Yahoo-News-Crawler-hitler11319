@@ -11,7 +11,7 @@ class News:
 
 
     def __str__(self):
-        return "topic:{topic} \n author:{author} \n date:{date} \n time:{time} \n text:{text} ".format(
+        return "topic:{topic} \n author:{author} \n date:{date} \n time:{time} \n text:{text} \n ".format(
             topic  =  self.topic,  
             author  =  self.author,  
             date  =  self.date,
@@ -19,7 +19,7 @@ class News:
             text  =  self.text
         )
 
-class List_news(list):
+class List_news(List):
     def __init__(self):
         self.new = []
 
@@ -32,4 +32,3 @@ class List_news(list):
 
     def fitler(self):
         pass
-
