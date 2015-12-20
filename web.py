@@ -37,9 +37,10 @@ def change_time_format(date):
     return date
 
 
-def againdeal(url_list): 
+def againdeal(url_list, output): 
     #deal with data, use append add to store_class , findally return
     store_class = news.List_news()
+    i = 0
 
     h1 = re.compile('<h1 class=\"headline\">.*</h1>')
     span = re.compile('<span class=\"provider org\">.*</span>')
@@ -47,6 +48,9 @@ def againdeal(url_list):
     p = re.compile('<p class=\"first\">.*</p>|<p>.*</p>')        #It is very difficult thought for a long, but can be found with union
 
     for url in url_list:
+        
+        i += 1
+
         nextweb = requests.get('https://tw.news.yahoo.com/' + str(url) + 'html')
         nextweb.encoding = 'utf-8'
         information = nextweb.text
@@ -60,6 +64,11 @@ def againdeal(url_list):
         date = change_time_format(date)
 
         store_class.append(news.News(topic, author, date[0:11], date[14:], text))
+
+        #The results are output in the js file and outputs the captured Ikunori News
+        output.write(store_class.new[i - 1].__str__())
+        print("第", i, "則新聞已擷取完，還剩下", len(url_list) - i, "則新聞")
+        if i  == len(url_list) : print("已擷取完畢！")
     
     return store_class
 
@@ -76,14 +85,9 @@ def main():
 
     url_list = dealstr(m)
 
-    class_list = againdeal(url_list)
-
-    #The results are output in the js file and outputs the captured Ikunori News
     output = open("result.json", "wt")
 
-    for i in range(0,len(class_list.new)):
-        output.write(class_list.new[i].__str__())
-        print("第", (i+1), "則新聞已擷取完")
+    class_list = againdeal(url_list, output)
 
     output.close()
 
