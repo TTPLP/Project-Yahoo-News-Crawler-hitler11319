@@ -33,7 +33,7 @@ class List_news():
         return len(self.new)
 
     def search_author(self, goal):
-        output = open(goal + ".txt", "wt")
+        output = open(goal + ".json", "wt")
 
         for y in self.new:
             if y.author == goal:
@@ -48,8 +48,8 @@ class List_news():
 
         if type(date) == datetime.date:
 
-            before_time = open ("before " + str(date) + ".txt", "wt")
-            after_time = open ("after " + str(date) + ".txt", "wt")
+            before_time = open ("before " + str(date) + ".json", "wt")
+            after_time = open ("after " + str(date) + ".json", "wt")
 
             for y in self.new:
                 if time.mktime(goal_date.timetuple()) > time.mktime(y.date.timetuple()):
