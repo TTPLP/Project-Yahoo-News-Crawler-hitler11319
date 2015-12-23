@@ -35,27 +35,57 @@ class List_news():
     def search_author(self, goal):
         output = open(goal + ".json", "wt")
 
+        count = 0
+
         for y in self.new:
             if y.author == goal:
                 output.write(y.__str__())
+                print("第", count, "則新聞已讀取")
+                count += 1
+
+        if count != 0:
+            print("讀取完畢")
+        else:
+            print("查無此資料")
+
 
         output.close()
 
-    def search_time(self, goal_date):
+    def search_time(self, first_goal_time, end_goal_time):
 
         import datetime
-        import time
 
-        if type(date) == datetime.date:
+        output = open(first_goal_time + "點到" + end_goal_time + "點的新聞.json", "wt")
 
-            before_time = open ("before " + str(date) + ".json", "wt")
-            after_time = open ("after " + str(date) + ".json", "wt")
+        count = 0
 
-            for y in self.new:
-                if time.mktime(goal_date.timetuple()) > time.mktime(y.date.timetuple()):
-                    before_time.write(y.__str__())
-                elif time.mktime(goal_date.timetuple()) < time.mktime(y.date.timetuple()):
-                    after_time.write(y.__str__())
+        for y in self.new:
+            if first_goal_time <= y.time.hour < end_goal_time:
+                output.wiite(y.__str__())
+                print("第", count, "則新聞已讀取")
+                count += 1
 
-            before_time.close()
-            after_time.close()
+        if count != 0:
+            print("讀取完畢")
+        else:
+            print("查無此資料")
+
+        output.close()
+
+    def search_topic(self, keyword):
+        output = open("有關", keyword, "的新聞.json", "wt")
+
+        count =0
+
+        for y in self.new:
+            if keyword in y.topic:
+                output.write(y.__str__())
+                print("第", count, "則新聞已讀取")
+                count += 1
+
+        if count != 0:
+            print("讀取完畢")
+        else:
+            print("查無此資料")
+
+        output.close()
