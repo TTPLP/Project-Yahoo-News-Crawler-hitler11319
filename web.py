@@ -92,6 +92,28 @@ def main():
 
     output.close()
 
+    while True:
+        print("1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
+
+        first_input = input("請輸入數字：")
+
+        if first_input == "4": 
+            print("程式結束，謝謝使用！")
+        elif first_input == "1":
+            keyword = input("請輸入關鍵字：")
+
+            class_list.search_topic(keyword)
+        elif first_input == "2":
+            first_goal_time = input("請輸入時段的開題（0-23)：")
+            end_goal_time = input("請輸入時段的結尾（1-24)：")
+
+            class_list.search_time(first_goal_time, end_goal_time)
+
+        elif first_input == "3":
+            goal = input("請輸入作者：")
+
+            class_list.search_author(goal)
+
 if __name__ == '__main__':
     main()
 
