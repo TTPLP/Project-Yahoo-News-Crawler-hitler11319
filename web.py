@@ -67,7 +67,7 @@ def againdeal(url_list, output):
         store_class.append(news.News(topic, author, datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10])), datetime.time(int(date[14:16]), int(date[17:]), 0), text))
 
         #The results are output in the js file and outputs the captured Ikunori News
-        output.write(store_class.new[i - 1].__str__())
+        output.write(str(store_class.new[i - 1]))
         print("第", i, "則新聞已擷取完，還剩下", len(url_list) - i, "則新聞")
         if i  == len(url_list) : print("已擷取完畢！")
     
