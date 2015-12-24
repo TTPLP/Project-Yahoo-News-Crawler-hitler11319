@@ -23,21 +23,21 @@ class News:
 
 class List_news():
     def __init__(self):
-        self.new = []
+        self.news = []
 
     def append(self, data):
-        self.new.append(data)
-        return self.new
+        self.news.append(data)
+        return self.news
 
     def len(self):
-        return len(self.new)
+        return len(self.news)
 
     def search_author(self, goal):
         output = open(goal + ".json", "wt")
 
         count = 0
 
-        for y in self.new:
+        for y in self.news:
             if y.author == goal:
                 output.write(y.__str__())
                 print("第", count, "則新聞已讀取")
@@ -55,11 +55,11 @@ class List_news():
 
         import datetime
 
-        output = open(first_goal_time + "點到" + end_goal_time + "點的新聞.json", "wt")
+        output = open(first_goal_time + "o'clock to " + end_goal_time + "o'clcok news.json", "wt")
 
         count = 0
 
-        for y in self.new:
+        for y in self.news:
             if first_goal_time <= y.time.hour < end_goal_time:
                 output.wiite(y.__str__())
                 print("第", count, "則新聞已讀取")
@@ -73,11 +73,11 @@ class List_news():
         output.close()
 
     def search_topic(self, keyword):
-        output = open("有關", keyword, "的新聞.json", "wt")
+        output = open("about", keyword, "news.json", "wt")
 
         count =0
 
-        for y in self.new:
+        for y in self.news:
             if keyword in y.topic:
                 output.write(y.__str__())
                 print("第", count, "則新聞已讀取")
