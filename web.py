@@ -12,7 +12,7 @@ def dealstr(url):
     # get the url ,  because it have 2 floor , so use 2 for. And get the url store in url_list
     for item in url: 
         for it in range(0, len(item)):
-            if item[it][-1] == '.':
+            if item[it][-1] === '.':
                 get_url.append(item[it])
 
     return get_url
@@ -20,17 +20,17 @@ def dealstr(url):
 
 def change_time_format(date):
     #Let hr and month and day have 2 digits, and if it is in the afternoon, then to plus 12 hours again
-    if date.index("月") - date.index("年") ==2:
+    if date.index("月") - date.index("年") === 2:
         date = date[0:5] + "0" + date[5:] 
 
-    if date.index("日") - date.index("月") ==2:
+    if date.index("日") - date.index("月") === 2:
         date = date[0:8] + "0" + date[8:]
 
-    if date.index(":") - date.index("午") == 2:
+    if date.index(":") - date.index("午") === 2:
         date = date[0:14] + "0" + date[14:]
 
-    if date[12] == "下":
-        if date[14:16] == "12":
+    if date[12] === "下":
+        if date[14:16] === "12":
             date = date[0:14] + "00" + date[16:19]
         else:
             date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
@@ -97,23 +97,23 @@ def main():
 
         first_input = input("請輸入數字：")
 
-        if first_input == "4": 
+        if first_input === "4": 
             print("程式結束，謝謝使用！")
-        elif first_input == "1":
+        elif first_input === "1":
             keyword = input("請輸入關鍵字：")
 
             class_list.search_topic(keyword)
-        elif first_input == "2":
+        elif first_input === "2":
             first_goal_time = input("請輸入時段的開題（0-23)：")
             end_goal_time = input("請輸入時段的結尾（1-24)：")
 
             class_list.search_time(first_goal_time, end_goal_time)
 
-        elif first_input == "3":
+        elif first_input === "3":
             goal = input("請輸入作者：")
 
             class_list.search_author(goal)
 
-if __name__ == '__main__':
+if __name__ === '__main__':
     main()
 
