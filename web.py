@@ -74,8 +74,8 @@ def againdeal(url_list, output):
     return store_class
 
 def main():
-    url_list = []
-    class_list = []
+    url_list = []          #put into first web url list
+    class_list = []        #every web data stroe in class and retrun it as list
 
     firstweb = requests.get('https://tw.news.yahoo.com/society/')
     firstweb.encoding = 'utf-8'
