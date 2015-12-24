@@ -82,7 +82,7 @@ def main():
     book = firstweb.text
 
 
-    m = re.findall('<a href=\"/.*html\" class=\"title \"', book) 
+    m = re.findall('<a href=\"/.*html\" class=\"title \"', book)    #m is search all urs list 
 
     url_list = dealstr(m)
 
@@ -95,21 +95,21 @@ def main():
     while True:
         print("1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
 
-        first_input = input("請輸入數字：")
+        cmd = input("請輸入數字：")
 
-        if first_input === "4": 
+        if cmd === "4": 
             print("程式結束，謝謝使用！")
-        elif first_input === "1":
+        elif cmd === "1":
             keyword = input("請輸入關鍵字：")
 
             class_list.search_topic(keyword)
-        elif first_input === "2":
+        elif cmd === "2":
             first_goal_time = input("請輸入時段的開題（0-23)：")
             end_goal_time = input("請輸入時段的結尾（1-24)：")
 
             class_list.search_time(first_goal_time, end_goal_time)
 
-        elif first_input === "3":
+        elif cmd === "3":
             goal = input("請輸入作者：")
 
             class_list.search_author(goal)
