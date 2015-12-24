@@ -73,9 +73,26 @@ def againdeal(url_list, output):
     
     return store_class
 
+def using_keyword(class_list):
+    keyword = input("請輸入關鍵字：")
+
+    class_list.search_topic(keyword)
+
+def using_time(class_list):
+    first_goal_time = input("請輸入時段的開題（0-23)：")
+    end_goal_time = input("請輸入時段的結尾（1-24)：")
+
+    class_list.search_time(first_goal_time, end_goal_time)
+
+def using_author(class_list):
+    goal = input("請輸入作者：")
+
+    class_list.search_author(goal)
+
 def main():
     url_list = []          #put into first web url list
     class_list = []        #every web data stroe in class and retrun it as list
+    function_dict = {"1":using_keyword, "2":using_time, "3":using_author}
 
     firstweb = requests.get('https://tw.news.yahoo.com/society/')
     firstweb.encoding = 'utf-8'
@@ -99,20 +116,8 @@ def main():
 
         if cmd === "4": 
             print("程式結束，謝謝使用！")
-        elif cmd === "1":
-            keyword = input("請輸入關鍵字：")
-
-            class_list.search_topic(keyword)
-        elif cmd === "2":
-            first_goal_time = input("請輸入時段的開題（0-23)：")
-            end_goal_time = input("請輸入時段的結尾（1-24)：")
-
-            class_list.search_time(first_goal_time, end_goal_time)
-
-        elif cmd === "3":
-            goal = input("請輸入作者：")
-
-            class_list.search_author(goal)
+        else :
+            function_dict[cmd](class_list)
 
 if __name__ === '__main__':
     main()
