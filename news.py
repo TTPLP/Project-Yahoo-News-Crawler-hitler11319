@@ -39,7 +39,7 @@ class List_news():
 
         for y in self.news:
             if y.author == goal:
-                output.write(y.__str__())
+                output.write(str(y))
                 print("第", count, "則新聞已讀取")
                 count += 1
 
@@ -61,7 +61,7 @@ class List_news():
 
         for y in self.news:
             if first_goal_time <= y.time.hour < end_goal_time:
-                output.wiite(y.__str__())
+                output.wiite(str(y))
                 print("第", count, "則新聞已讀取")
                 count += 1
 
@@ -79,7 +79,7 @@ class List_news():
 
         for y in self.news:
             if keyword in y.topic:
-                output.write(y.__str__())
+                output.write(str(y))
                 print("第", count, "則新聞已讀取")
                 count += 1
 
