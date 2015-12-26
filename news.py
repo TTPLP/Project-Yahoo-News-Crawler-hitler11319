@@ -32,14 +32,23 @@ class List_news():
     def len(self):
         return len(self.news)
 
-    def filter(self, func, output):
+    def save(self, items, output):
+        i = 1
+        for item in items:
+            output.write(str(item))
+            print("第" + str(i) + "則已讀取")
+            i += 1
+
+        print("讀取完畢")
+
+    def filter(self, func):
         for item in self.news:
-            if func(item): output.write(str(item))
+            if func(item): yield item   #self.filter() is list( so save only 1 floor)
 
     def search_author(self, goal):
         output = open(goal + ".json", "wt")
         
-        self.filter(lambda item: item.author == goal, output)
+        self.save(self.filter(lambda item: goal in item.author), output)
 
         output.close()
 
@@ -47,15 +56,16 @@ class List_news():
 
         import datetime
 
-        output = open(first_goal_time + "o'clock to " + end_goal_time + "o'clcok news.json", "wt")
+        output = open(str(first_goal_time) + " \n o'clock to " + str(end_goal_time) + "\n o'clcok news.json", "wt")
 
-        self.filter(lambda item: first_goal_time <= item.time.hour < end_goal_time, output)
+        self.save(self.filter(lambda item: first_goal_time <= item.time.hour < end_goal_time), output)
 
         output.close()
 
     def search_topic(self, keyword):
         output = open("about" + keyword + "news.json", "wt")
 
-        self.filter(lambda item: keyword in item.topic, output)
+        self.save(self.filter(lambda item: keyword in item.topic), output)
 
         output.close()
+
