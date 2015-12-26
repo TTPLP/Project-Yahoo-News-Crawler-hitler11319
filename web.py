@@ -89,6 +89,9 @@ def using_author(class_list):
 
     class_list.search_author(goal)
 
+def error(class_list):
+    print("ERROR")
+
 def main():
     url_list = []          #put into first web url list
     class_list = []        #every web data stroe in class and retrun it as list
@@ -110,18 +113,18 @@ def main():
     output.close()
 
     while True:
-        print("1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
+        print( " \n 1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
 
         cmd = input("請輸入數字：")
 
         if cmd == "4": 
             print("程式結束，謝謝使用！")
         else :
-            try:
-                function_dict[cmd](class_list)
-            except:
-                print("輸入錯誤！")
+             function_dict.get(cmd, error)(class_list)
+
 
 if __name__ == '__main__':
     main()
+
+
 
