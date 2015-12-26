@@ -12,7 +12,7 @@ def dealstr(url):
     # get the url ,  because it have 2 floor , so use 2 for. And get the url store in url_list
     for item in url: 
         for it in range(0, len(item)):
-            if item[it][-1] === '.':
+            if item[it][-1] == '.':
                 get_url.append(item[it])
 
     return get_url
@@ -20,17 +20,17 @@ def dealstr(url):
 
 def change_time_format(date):
     #Let hr and month and day have 2 digits, and if it is in the afternoon, then to plus 12 hours again
-    if date.index("月") - date.index("年") === 2:
+    if date.index("月") - date.index("年") == 2:
         date = date[0:5] + "0" + date[5:] 
 
-    if date.index("日") - date.index("月") === 2:
+    if date.index("日") - date.index("月") == 2:
         date = date[0:8] + "0" + date[8:]
 
-    if date.index(":") - date.index("午") === 2:
+    if date.index(":") - date.index("午") == 2:
         date = date[0:14] + "0" + date[14:]
 
-    if date[12] === "下":
-        if date[14:16] === "12":
+    if date[12] == "下":
+        if date[14:16] == "12":
             date = date[0:14] + "00" + date[16:19]
         else:
             date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
@@ -67,7 +67,7 @@ def againdeal(url_list, output):
         store_class.append(news.News(topic, author, datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10])), datetime.time(int(date[14:16]), int(date[17:]), 0), text))
 
         #The results are output in the js file and outputs the captured Ikunori News
-        output.write(str(store_class.new[i - 1]))
+        output.write(str(i) + "  " +str(store_class.news[i - 1]))
         print("第", i, "則新聞已擷取完，還剩下", len(url_list) - i, "則新聞")
         if i  == len(url_list) : print("已擷取完畢！")
     
@@ -79,8 +79,8 @@ def using_keyword(class_list):
     class_list.search_topic(keyword)
 
 def using_time(class_list):
-    first_goal_time = input("請輸入時段的開題（0-23)：")
-    end_goal_time = input("請輸入時段的結尾（1-24)：")
+    first_goal_time = int(input("請輸入時段的開題（0-23)："))
+    end_goal_time = int(input("請輸入時段的結尾（1-24)："))
 
     class_list.search_time(first_goal_time, end_goal_time)
 
@@ -114,11 +114,14 @@ def main():
 
         cmd = input("請輸入數字：")
 
-        if cmd === "4": 
+        if cmd == "4": 
             print("程式結束，謝謝使用！")
         else :
-            function_dict[cmd](class_list)
+            try:
+                function_dict[cmd](class_list)
+            except:
+                print("輸入錯誤！")
 
-if __name__ === '__main__':
+if __name__ == '__main__':
     main()
 
