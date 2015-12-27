@@ -22,12 +22,17 @@ class News:
         )
 
 class List_news():
-    def __init__(self):
+    def __init__(self, default = None):
         self.news = []
 
     def append(self, data):
-        self.news.append(data)
-        return self.news
+        #data must not be None, so use try ... except deal with 
+        try:
+            assert not data is None
+            self.news.append(data)
+            return self.news
+        except:
+            print('error')
 
     def len(self):
         return len(self.news)
@@ -68,4 +73,3 @@ class List_news():
         self.save(self.filter(lambda item: keyword in item.topic), output)
 
         output.close()
-
