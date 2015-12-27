@@ -41,7 +41,8 @@ def change_time_format(date):
 def againdeal(url_list, output): 
     #deal with data, use append add to store_class , findally return
     store_class = news.List_news()
-    i = 0
+
+    i = 1
 
     h1 = re.compile('<h1 class=\"headline\">.*</h1>')
     span = re.compile('<span class=\"provider org\">.*</span>')
@@ -49,28 +50,33 @@ def againdeal(url_list, output):
     p = re.compile('<p class=\"first\">.*</p>|<p>.*</p>')        #It is very difficult thought for a long, but can be found with union
 
     for url in url_list:
-        
-        i += 1
 
         nextweb = requests.get('https://tw.news.yahoo.com/' + str(url) + 'html')
         nextweb.encoding = 'utf-8'
         information = nextweb.text
 
-        #uer "str" ,  because list not use 
-        topic = str(h1.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
-        author = str(span.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
-        date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
-        text = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
+        #Prevent coding problems
+        try:
+            #uer "str" ,  because list not use 
+            topic = str(h1.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
+            author = str(span.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
+            date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
+            text = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
-        date = change_time_format(date)
+            date = change_time_format(date)
 
-        store_class.append(news.News(topic, author, datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10])), datetime.time(int(date[14:16]), int(date[17:]), 0), text))
 
-        #The results are output in the js file and outputs the captured Ikunori News
-        output.write(str(i) + "  " +str(store_class.news[i - 1]))
-        print("第", i, "則新聞已擷取完，還剩下", len(url_list) - i, "則新聞")
-        if i  == len(url_list) : print("已擷取完畢！")
-    
+            store_class.append(news.News(topic, author, datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10])), datetime.time(int(date[14:16]), int(date[17:]), 0), text))
+
+            #The results are output in the js file and outputs the captured Ikunori News
+            output.write(str(i) + "  " +str(store_class.news[i - 1]))
+            print("第", i, "則新聞已擷取完")
+            i += 1
+        except:
+            url_list.remove(url)
+  
+    print("讀取完畢！")
+
     return store_class
 
 def using_keyword(class_list):
@@ -119,12 +125,14 @@ def main():
 
         if cmd == "4": 
             print("程式結束，謝謝使用！")
+            break
         else :
              function_dict.get(cmd, error)(class_list)
 
 
 if __name__ == '__main__':
     main()
+
 
 
 
