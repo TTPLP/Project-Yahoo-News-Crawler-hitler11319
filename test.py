@@ -12,9 +12,14 @@ class News_mathod_test(unittest.TestCase):
         self.assertEqual(self.news.append(test_input), ["this is test input"])
 
     def test_filter(self):
-        news.List_news.news = ["123", "456", "7893"]
+        self.news.append("123")
+        self.news.append("456")
+        self.news.append("7893")
+        total = ""
         goal = "3"
-        self.assertEqual(self.news.filter(lambda item: goal in item), ["123","7893"])
+        for i in self.news.filter(lambda item: goal in item):
+            total += i
+        self.assertEqual(total, "1237893")
 
     def test_change_time_format(self):
         date = "2015年12月20日 下午3:12"
