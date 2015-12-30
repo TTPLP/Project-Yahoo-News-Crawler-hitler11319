@@ -73,7 +73,7 @@ def againdeal(url_list, output):
             print("第", i, "則新聞已擷取完")
             i += 1
         except:
-            url_list.remove(url)
+            continue
   
     print("讀取完畢！")
 
