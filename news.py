@@ -61,15 +61,16 @@ class List_news():
 
         import datetime
 
-        output = open(str(first_goal_time) + " \n o'clock to " + str(end_goal_time) + "\n o'clcok news.json", "wt")
+        output = open(str(first_goal_time) + "  o\'clock to " + str(end_goal_time) + "  o\'clcok news.json", "wt")
 
         self.save(self.filter(lambda item: first_goal_time <= item.time.hour < end_goal_time), output)
 
         output.close()
 
     def search_topic(self, keyword):
-        output = open("about" + keyword + "news.json", "wt")
+        output = open("about "  + keyword + " news.json", "wt")
 
         self.save(self.filter(lambda item: keyword in item.topic), output)
 
         output.close()
+
