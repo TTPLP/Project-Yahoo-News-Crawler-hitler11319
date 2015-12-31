@@ -67,5 +67,16 @@ class News_mathod_test(unittest.TestCase):
 
         self.assertEqual(len(result), 84)
 
+    def test_againdeal(self):
+        url_list = ['123']
+        output = open('t2.json', "wt")
+
+        web.againdeal(url_list, output)
+
+        output.close()
+
+        result = open('t2.json', "rt").read()
+        self.assertEqual(len(result), 0)
+
 if __name__ == '__main__':
     unittest.main()
