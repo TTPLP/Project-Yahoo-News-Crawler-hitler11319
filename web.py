@@ -1,7 +1,9 @@
+from datetime import datetime
 import requests 
 import re
+
 import news
-import datetime
+
 
 def dealstr(url):
     get_url = []
@@ -38,35 +40,35 @@ def change_time_format(date):
     return date
 
 
-def againdeal(url_list, output): 
+def againdeal(url_list, output, base_url): 
     #deal with data, use append add to store_class , findally return
     store_class = news.List_news()
 
     i = 1
 
-    h1 = re.compile('<h1 class=\"headline\">.*</h1>')
-    span = re.compile('<span class=\"provider org\">.*</span>')
-    abbr = re.compile('<abbr title=.*</abbr>')
-    p = re.compile('<p class=\"first\">.*</p>|<p>.*</p>')        #It is very difficult thought for a long, but can be found with union
+    topic_split = re.compile('<h1 class=\"headline\">.*</h1>')
+    author_split = re.compile('<span class=\"provider org\">.*</span>')
+    date_split = re.compile('<abbr title=.*</abbr>')
+    text_split = re.compile('<p class=\"first\">.*</p>|<p>.*</p>')        #It is very difficult thought for a long, but can be found with union
 
     for url in url_list:
 
-        nextweb = requests.get('https://tw.news.yahoo.com/' + str(url) + 'html')
+        nextweb = requests.get(base_url + str(url) + 'html')
         nextweb.encoding = 'utf-8'
         information = nextweb.text
 
         #Prevent coding problems
         try:
             #uer "str" ,  because list not use 
-            topic = str(h1.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
-            author = str(span.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
-            date = str(abbr.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
-            text = str(p.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
+            topic = str(topic_split.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
+            author = str(author_split.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
+            date = str(date_split.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
+            text = str(text_split.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
             date = change_time_format(date)
 
 
-            store_class.append(news.News(topic, author, datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10])), datetime.time(int(date[14:16]), int(date[17:]), 0), text))
+            store_class.append(news.News(topic, author, datetime(int(date[0:4]), int(date[5:7]), int(date[8:10]), int(date[14:16]), int(date[17:]), 0), text))
 
             #The results are output in the js file and outputs the captured Ikunori News
             output.write(str(i) + "  " +str(store_class.news[i - 1]))
@@ -82,26 +84,56 @@ def againdeal(url_list, output):
 def using_keyword(class_list):
     keyword = input("請輸入關鍵字：")
 
-    class_list.search_topic(keyword)
+    result = class_list.search_topic(keyword)
+
+    store_or_print(result)
 
 def using_time(class_list):
     first_goal_time = int(input("請輸入時段的開題（0-23)："))
     end_goal_time = int(input("請輸入時段的結尾（1-24)："))
 
-    class_list.search_time(first_goal_time, end_goal_time)
+    result = class_list.search_time(first_goal_time, end_goal_time)
+
+    store_or_print(result)
 
 def using_author(class_list):
     goal = input("請輸入作者：")
 
-    class_list.search_author(goal)
+    result = class_list.search_author(goal)
+
+    store_or_print(result)
+
+def leave(class_list):
+    print('謝謝使用！')
+    exit()
 
 def error(class_list):
     print("ERROR")
 
+# use user to choose store or print
+def store_or_print(result):
+
+    def save(data):
+        with open(input("請輸入檔名:")+".json", "wt", encoding = 'utf-8') as output:
+            for item in data:
+                output.write(str(item))
+        
+    def output(data):
+        for item in data:
+            print(str(item))
+
+    def error(result):
+        print('error')
+
+    func_dict = {"S":save, "O":output}
+    print("\n S.儲存\n O.輸出")
+    func_dict.get(input("輸入指令（注意是大寫）:"), error)(result)
+
 def main():
     url_list = []          #put into first web url list
     class_list = []        #every web data stroe in class and retrun it as list
-    function_dict = {"1":using_keyword, "2":using_time, "3":using_author}
+    base_url = 'https://tw.news.yahoo.com/'   #this is yahoo news head url
+    function_dict = {"1":using_keyword, "2":using_time, "3":using_author, "4":leave}
 
     firstweb = requests.get('https://tw.news.yahoo.com/society/')
     firstweb.encoding = 'utf-8'
@@ -112,27 +144,19 @@ def main():
 
     url_list = dealstr(m)
 
-    output = open("result.json", "wt")
+    output = open("result.json", "wt", encoding = 'utf-8')
 
-    class_list = againdeal(url_list, output)
+    class_list = againdeal(url_list, output, base_url)
 
     output.close()
 
     while True:
         print( " \n 1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
 
-        cmd = input("請輸入數字：")
-
-        if cmd == "4": 
-            print("程式結束，謝謝使用！")
-            break
-        else :
-             function_dict.get(cmd, error)(class_list)
+        function_dict.get(input("請輸入數字："), error)(class_list)
 
 
 if __name__ == '__main__':
     main()
-
-
 
 
