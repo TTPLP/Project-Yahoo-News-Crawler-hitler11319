@@ -1,76 +1,54 @@
+from datetime import datetime
+
 
 class News:
-    def __init__(self, topic, author, date, time, text):
+    def __init__(self, topic, author, datetime, text):
 
-        import datetime
-
-        if type(date) == datetime.date and type(time) == datetime.time :
-            self.topic = topic
-            self.author = author
-            self.date = date
-            self.time = time
-            self.text = text
+        self.topic = topic
+        self.author = author
+        self.datetime = datetime
+        self.text = text
 
 
     def __str__(self):
-        return "topic:{topic} \n author:{author} \n date:{date} \n time:{time} \n text:{text} \n  \n".format(
+        return "topic:{topic} \n author:{author} \n datetime:{datetime} \n  \n text:{text} \n  \n".format(
             topic  =  self.topic,  
             author  =  self.author,  
-            date  =  self.date,
-            time = self.time,  
+            datetime  =  self.datetime, 
             text  =  self.text
         )
 
 class List_news():
-    def __init__(self, default = None):
-        self.news = []
+    def __init__(self, default = []):
+
+            self.news = default
 
     def append(self, data):
         #data must not be None, so use try ... except deal with 
-        try:
-            assert not data is None
+        if  type(data) == News :
             self.news.append(data)
             return self.news
-        except:
-            print('error')
+        else:
+            raise BaseException
 
-    def len(self):
+    def __len__(self):
         return len(self.news)
-
-    def save(self, items, output):
-        i = 1
-        for item in items:
-            output.write(str(item))
-            print("第" + str(i) + "則已讀取")
-            i += 1
-
-        print("讀取完畢")
 
     def filter(self, func):
         for item in self.news:
             if func(item): yield item   #self.filter() is list( so save only 1 floor)
 
     def search_author(self, goal):
-        output = open(goal + ".json", "wt")
         
-        self.save(self.filter(lambda item: goal in item.author), output)
-
-        output.close()
+        return self.filter(lambda item: goal in item.author)
 
     def search_time(self, first_goal_time, end_goal_time):
 
-        import datetime
+        return self.filter(lambda item: first_goal_time <= item.datetime.hour < end_goal_time)
 
-        output = open(str(first_goal_time) + "  o\'clock to " + str(end_goal_time) + "  o\'clcok news.json", "wt")
-
-        self.save(self.filter(lambda item: first_goal_time <= item.time.hour < end_goal_time), output)
-
-        output.close()
 
     def search_topic(self, keyword):
-        output = open("about "  + keyword + " news.json", "wt")
 
-        self.save(self.filter(lambda item: keyword in item.topic), output)
+        return self.filter(lambda item: keyword in item.topic)
 
-        output.close()
 
