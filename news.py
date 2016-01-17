@@ -11,7 +11,7 @@ class News:
 
 
     def __str__(self):
-        return "topic:{topic} \n author:{author} \n datetime:{datetime} \n  \n text:{text} \n  \n".format(
+        return "topic:{topic} \n author:{author} \n datetime:{datetime} \n text:{text} \n \n".format(
             topic  =  self.topic,  
             author  =  self.author,  
             datetime  =  self.datetime, 
@@ -19,8 +19,11 @@ class News:
         )
 
 class List_news():
-    def __init__(self, default = []):
+    def __init__(self, default = None):
 
+        if default is None:
+            self.news = []
+        else:
             self.news = default
 
     def append(self, data):
@@ -33,6 +36,18 @@ class List_news():
 
     def __len__(self):
         return len(self.news)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+
+        i = -1
+
+        if i < len(self.news):
+            i +=1
+            return self.news[i]
+
 
     def filter(self, func):
         for item in self.news:
@@ -50,5 +65,7 @@ class List_news():
     def search_topic(self, keyword):
 
         return self.filter(lambda item: keyword in item.topic)
+
+
 
 
