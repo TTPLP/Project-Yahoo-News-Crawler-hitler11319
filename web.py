@@ -1,5 +1,6 @@
-from datetime import datetime
-import requests 
+from datetime import datetime, timedelta
+import requests
+import json
 import re
 
 import news
@@ -18,26 +19,6 @@ def dealstr(url):
                 get_url.append(item[it])
 
     return get_url
-
-
-def change_time_format(date):
-    #Let hr and month and day have 2 digits, and if it is in the afternoon, then to plus 12 hours again
-    if date.index("月") - date.index("年") == 2:
-        date = date[0:5] + "0" + date[5:] 
-
-    if date.index("日") - date.index("月") == 2:
-        date = date[0:8] + "0" + date[8:]
-
-    if date.index(":") - date.index("午") == 2:
-        date = date[0:14] + "0" + date[14:]
-
-    if date[12] == "下":
-        if date[14:16] == "12":
-            date = date[0:14] + "00" + date[16:19]
-        else:
-            date = date[0:14] + str(int(date[14:16])+12) + date[16:19]
-
-    return date
 
 
 def againdeal(url_list, output, base_url): 
@@ -62,16 +43,21 @@ def againdeal(url_list, output, base_url):
             #uer "str" ,  because list not use 
             topic = str(topic_split.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
             author = str(author_split.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
-            date = str(date_split.findall(information)).replace('>', '<', 10).split('<')[2]       #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
+            date = str(date_split.findall(information)).replace('>', '<', 10).split('<')[2]      #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
             text = str(text_split.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
 
-            date = change_time_format(date)
+            #deal with date
+            if '下' in date:
+                date = date.replace('下午', '')
+                date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(hours = 12)
+            else:
+                date = date.replace('上午', '')
+                date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') 
 
 
-            store_class.append(news.News(topic, author, datetime(int(date[0:4]), int(date[5:7]), int(date[8:10]), int(date[14:16]), int(date[17:]), 0), text))
-
+            store_class.append(news.News(topic, author, date, text))
             #The results are output in the js file and outputs the captured Ikunori News
-            output.write(str(i) + "  " +str(store_class.news[i - 1]))
+            output.write(str(i) + " " + str(store_class.news[i - 1]))
             print("第", i, "則新聞已擷取完")
             i += 1
         except:
@@ -125,9 +111,14 @@ def store_or_print(result):
     def error(result):
         print('error')
 
-    func_dict = {"S":save, "O":output}
-    print("\n S.儲存\n O.輸出")
+    def leave(result):
+        print('謝謝使用！')
+        exit()
+
+    func_dict = {"S":save, "O":output, "L":leave}
+    print("\n S.儲存\n O.輸出\n L.離開")
     func_dict.get(input("輸入指令（注意是大寫）:"), error)(result)
+
 
 def main():
     url_list = []          #put into first web url list
@@ -144,11 +135,9 @@ def main():
 
     url_list = dealstr(m)
 
-    output = open("result.json", "wt", encoding = 'utf-8')
+    with open("result.json", "wt", encoding = 'utf-8') as output:
 
-    class_list = againdeal(url_list, output, base_url)
-
-    output.close()
+        class_list = againdeal(url_list, output, base_url)
 
     while True:
         print( " \n 1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
@@ -158,5 +147,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
 
 
