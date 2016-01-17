@@ -8,26 +8,21 @@ import web
 
 class News_mathod_test(unittest.TestCase):
     def setUp(self):
-        self.news = news.List_news()
+        self.news = news.List_news()  
 
         self.news.append(news.News('hello', 'me', datetime(2015, 10, 5, 12, 50, 0), 'hello you are '))
         self.news.append(news.News('ok', 'you', datetime(2015, 12, 18, 18, 25, 0), 'are you ok' ))
 
     def test_append(self):
-        test_input = news.News('a', 'a', datetime(1000, 6, 18, 1, 25, 0), 'a')
-
-        self.assertEqual(len(self.news.append(test_input)), 3)
-        self.assertEqual(self.news[0], '123')
+        self.news.append(news.News('a', 'a', datetime(1000, 6, 18, 1, 25, 0), 'a'))
+        
+        self.assertEqual(len(self.news), 3)
 
     def test_filter(self):
         goal = "ok"
         
         for i in self.news.filter(lambda item: goal in item.text):
             self.assertIn("ok", i.topic)
-
-    def test_change_time_format(self):
-        date = "2015年12月20日 下午3:12"
-        self.assertEqual(web.change_time_format(date), "2015年12月20日 下午15:12")
 
     def test_dealstr(self):
         url = ["<a href=\"/405964.html class=\"hello\"  ", "<a href=\"/66482.html class=\"hello\"", "<a href=\"/11158.html class=\"hello\""]
