@@ -3,7 +3,7 @@ import unittest
 import os
 
 import news
-import web
+import crawler
 
 
 class News_mathod_test(unittest.TestCase):
