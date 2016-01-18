@@ -57,7 +57,7 @@ def againdeal(url_list, output, base_url):
 
             store_class.append(news.News(topic, author, date, text))
             #The results are output in the js file and outputs the captured Ikunori News
-            output.write(str(i) + " " + str(store_class.news[i - 1]))
+            output.write(json.dumps(str(i) + " " + str(store_class.news[i - 1])))
             print("第", i, "則新聞已擷取完")
             i += 1
         except:
@@ -101,8 +101,8 @@ def store_or_print(result):
 
     def save(data):
         with open(input("請輸入檔名:")+".json", "wt", encoding = 'utf-8') as output:
-            for item in data:
-                output.write(str(item))
+            for num, item in enumerate(data):
+                output.write(json.dumps(str(num) + " " + str(item)))
         
     def output(data):
         for item in data:
@@ -147,6 +147,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
 
 
 
