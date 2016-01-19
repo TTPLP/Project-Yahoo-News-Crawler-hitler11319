@@ -59,75 +59,63 @@ def againdeal(url_list, output, base_url):
 
 
             store_class.append(news.News(topic, author, date, text))
+
             #The results are output in the js file and outputs the captured Ikunori News
-            output.write(json.dumps(str(i) + " " + str(store_class.news[i - 1]), ensure_ascii=False))
-            print("第", i, "則新聞已擷取完")
+            output.write(json.loads(json.dumps(str(i) + " " + str(store_class.news[i - 1]))))
+
+            print('第', i, '則新聞已擷取完')
             i += 1
         except:
             continue
   
-    print("讀取完畢！")
+    print('讀取完畢！')
 
     return store_class
 
 def using_keyword(class_list):
-    keyword = input("請輸入關鍵字：")
+    keyword = input('請輸入關鍵字：')
 
     result = class_list.search_topic(keyword)
 
-    store_or_print(result)
+    return result
 
 def using_time(class_list):
-    first_goal_time = int(input("請輸入時段的開題（0-23)："))
-    end_goal_time = int(input("請輸入時段的結尾（1-24)："))
+    first_goal_time = int(input('請輸入時段的開題（0-23)：'))
+    end_goal_time = int(input('請輸入時段的結尾（1-24)：'))
 
     result = class_list.search_time(first_goal_time, end_goal_time)
 
-    store_or_print(result)
+    return result
 
 def using_author(class_list):
-    goal = input("請輸入作者：")
+    goal = input('請輸入作者：')
 
     result = class_list.search_author(goal)
 
-    store_or_print(result)
+    return result
 
 def leave(class_list):
     print('謝謝使用！')
     exit()
 
 def error(class_list):
-    print("ERROR")
+    print('ERROR')
 
-# use user to choose store or print
-def store_or_print(result):
 
-    def save(data):
-        with open(input("請輸入檔名:")+".json", "wt", encoding = 'utf-8') as output:
-            for num, item in enumerate(data):
-                output.write(json.dumps(str(num) + " " + str(item), ensure_ascii=False))
+def save(data):
+    with open(input('請輸入檔名:') + '.json', 'wt', encoding = 'utf-8') as output:
+        for num, item in enumerate(data):
+            output.write(json.loads(json.dumps(str(num) + ' ' + str(item))))
         
-    def output(data):
-        for item in data:
-            print(str(item))
-
-    def error(result):
-        print('error')
-
-    def leave(result):
-        print('謝謝使用！')
-        exit()
-
-    func_dict = {"S":save, "O":output, "L":leave}
-    print("\n S.儲存\n O.輸出\n L.離開")
-    func_dict.get(input("輸入指令（注意是大寫）:"), error)(result)
-
+def output_data(data):
+    for item in data:
+        print(str(item))
 
 def main():
     url_list = []          #put into first web url list
     class_list = []        #every web data stroe in class and retrun it as list
     base_url = 'https://tw.news.yahoo.com/'   #this is yahoo news head url
-    function_dict = {"1":using_keyword, "2":using_time, "3":using_author, "4":leave}
+    function_dict = {'1':using_keyword, '2':using_time, '3':using_author, '4':leave}
 
     firstweb = requests.get('https://tw.news.yahoo.com/society/')
     firstweb.encoding = 'utf-8'
@@ -138,18 +126,24 @@ def main():
 
     url_list = dealstr(m)
 
-    with open("result.json", "wt", encoding = 'utf-8') as output:
-
+    with open('result.json', 'wt', encoding = 'utf-8') as output:
         class_list = againdeal(url_list, output, base_url)
 
     while True:
-        print( " \n 1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開")
+        print( ' \n 1.找標題\n 2.找一段時間 \n 3.找作者 \n 4.離開')
+        search_result = function_dict.get(input('請輸入數字：'), error)(class_list)
 
-        function_dict.get(input("請輸入數字："), error)(class_list)
+        print('\n S.儲存\n O.輸出\n L.離開')
+        cmd = input('請輸入文字:') 
+        if cmd == 'S': save(search_result)
+        if cmd == 'O': output_data(search_result)
+        if cmd == 'L': leave(class_list)
+        if cmd not in 'SOL': error(class_list)
 
 
 if __name__ == '__main__':
     main()
+
 
 
 
