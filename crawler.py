@@ -49,7 +49,10 @@ def againdeal(url_list, output, base_url):
             #deal with date
             if '下' in date:
                 date = date.replace('下午', '')
-                date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(hours = 12)
+                try:
+                    date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(hours = 12)
+                except:
+                    date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(dahs = 1, hours = -12)
             else:
                 date = date.replace('上午', '')
                 date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') 
@@ -147,6 +150,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 
 
