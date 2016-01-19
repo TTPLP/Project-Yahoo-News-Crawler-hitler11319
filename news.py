@@ -11,7 +11,7 @@ class News:
 
 
     def __str__(self):
-        return "topic:{topic} \n author:{author} \n datetime:{datetime} \n text:{text} \n \n".format(
+        return 'topic:{topic} , author:{author} , datetime:{datetime} , text:{text} '.format(
             topic  =  self.topic,  
             author  =  self.author,  
             datetime  =  self.datetime, 
@@ -54,17 +54,16 @@ class List_news():
             if func(item): yield item   #self.filter() is list( so save only 1 floor)
 
     def search_author(self, goal):
-        
         return self.filter(lambda item: goal in item.author)
 
     def search_time(self, first_goal_time, end_goal_time):
-
         return self.filter(lambda item: first_goal_time <= item.datetime.hour < end_goal_time)
 
 
     def search_topic(self, keyword):
-
         return self.filter(lambda item: keyword in item.topic)
+
+
 
 
 
