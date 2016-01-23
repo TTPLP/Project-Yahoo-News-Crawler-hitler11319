@@ -26,6 +26,7 @@ def againdeal(url_list, output, base_url):
     store_class = news.List_news()
 
     i = 1
+    to_json_str = '{'      #temporarily store str , let Convenience to store 
 
     topic_split = re.compile('<h1 class=\"headline\">.*</h1>')
     author_split = re.compile('<span class=\"provider org\">.*</span>')
@@ -60,14 +61,14 @@ def againdeal(url_list, output, base_url):
 
             store_class.append(news.News(topic, author, date, text))
 
-            #The results are output in the js file and outputs the captured Ikunori News
-            output.write(json.loads(json.dumps(str(i) + " " + str(store_class.news[i - 1]))))
+            to_json_str += (str(i) + ':{' + str(store_class.news[i - 1]) + '},')
 
             print('第', i, '則新聞已擷取完')
             i += 1
         except:
             continue
   
+    output.write(json.dumps(to_json_str[0:len(to_json_str)] + '}', ensure_ascii = False))  
     print('讀取完畢！')
 
     return store_class
@@ -103,9 +104,13 @@ def error(class_list):
 
 
 def save(data):
+    to_json_str_save = '{'
+
     with open(input('請輸入檔名:') + '.json', 'wt', encoding = 'utf-8') as output:
         for num, item in enumerate(data):
-            output.write(json.loads(json.dumps(str(num) + ' ' + str(item))))
+            to_json_str_save += (str(num) + ':{' + str(item) + '},')
+      
+        output.write(json.dumps(to_json_str_save[0:len(to_json_str_save)] + '{', ensure_ascii = False))
         
 def output_data(data):
     for item in data:
@@ -143,11 +148,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
 
 
