@@ -47,18 +47,3 @@ class News_mathod_test(unittest.TestCase):
         for item in self.news.search_topic(keyword):
             self.assertIn('hello', item.topic)
 
-    def test_againdeal(self):
-        base_url = 'https://tw.news.yahoo.com/'
-        url_list = ['123']
-
-        with open('t.json', "wt", encoding = 'utf-8') as output:
-            crawler.againdeal(url_list, output, base_url)
-        
-        with open('t.json', "rt", encoding = 'utf-8') as result:
-            self.assertEqual(len(result.read()), 0)
-
-        os.remove('t.json')
-
-
-if __name__ == '__main__':
-    unittest.main()
