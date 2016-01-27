@@ -26,7 +26,7 @@ class News_mathod_test(unittest.TestCase):
 
     def test_dealstr(self):
         url = ["<a href=\"/405964.html class=\"hello\"  ", "<a href=\"/66482.html class=\"hello\"", "<a href=\"/11158.html class=\"hello\""]
-        self.assertEqual(web.dealstr(url), ["405964.", "66482.", "11158."])
+        self.assertEqual(crawler.dealstr(url), ["405964.", "66482.", "11158."])
 
     def test_search_author(self):
         goal = 'me'
@@ -52,7 +52,7 @@ class News_mathod_test(unittest.TestCase):
         url_list = ['123']
 
         with open('t.json', "wt", encoding = 'utf-8') as output:
-            web.againdeal(url_list, output, base_url)
+            crawler.againdeal(url_list, output, base_url)
         
         with open('t.json', "rt", encoding = 'utf-8') as result:
             self.assertEqual(len(result.read()), 0)
