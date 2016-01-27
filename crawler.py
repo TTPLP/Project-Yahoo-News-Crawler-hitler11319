@@ -53,7 +53,7 @@ def againdeal(url_list, output, base_url):
                 try:
                     date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(hours = 12)
                 except:
-                    date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(dahs = 1, hours = -12)
+                    date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') + timedelta(days = 1, hours = -12)
             else:
                 date = date.replace('上午', '')
                 date = datetime.strptime(date, '%Y年%m月%d日 %H:%M') 
