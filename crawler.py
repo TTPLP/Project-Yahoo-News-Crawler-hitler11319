@@ -26,7 +26,7 @@ def againdeal(url_list, output, base_url):
     store_class = news.List_news()
 
     i = 1
-    to_json_str = '{'      #temporarily store str , let Convenience to store 
+    json_list = []
 
     topic_split = re.compile('<h1 class=\"headline\">.*</h1>')
     author_split = re.compile('<span class=\"provider org\">.*</span>')
@@ -42,10 +42,10 @@ def againdeal(url_list, output, base_url):
         #Prevent coding problems
         try:
             #uer "str" ,  because list not use 
-            topic = str(topic_split.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10)
-            author = str(author_split.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '')
+            topic = str(topic_split.findall(information)).replace('<h1 class=\"headline\">', '').replace('</h1>', '').replace('\\u3000', '', 20).replace('╱', '', 10).replace('[', '', 10).replace(']', '',10)
+            author = str(author_split.findall(information)).replace('<span class=\"provider org\">', '').replace('</span>', '').replace('[', '', 10).replace(']', '',10)
             date = str(date_split.findall(information)).replace('>', '<', 10).split('<')[2]      #this is so trouble,  it is ["",  "<abbr title = ...",  "date",  "</abbr>",  ""],  so is data[2]
-            text = str(text_split.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100)
+            text = str(text_split.findall(information)).replace('<p class=\"first\">', '').replace('</p>', '', 100).replace(' ', '', 100).replace('<p>', '', 100).replace('[', '', 10).replace(']', '',10).replace('\',\'', '', 10)
 
             #deal with date
             if '下' in date:
@@ -61,14 +61,14 @@ def againdeal(url_list, output, base_url):
 
             store_class.append(news.News(topic, author, date, text))
 
-            to_json_str += (str(i) + ':{' + str(store_class.news[i - 1]) + '},')
+            json_list.append(str(store_class.news[i - 1]))
 
             print('第', i, '則新聞已擷取完')
             i += 1
         except:
             continue
-  
-    output.write(json.dumps(to_json_str[0:len(to_json_str)] + '}', ensure_ascii = False))  
+
+    output.write(json.dumps(json_list,  ensure_ascii = False))
     print('讀取完畢！')
 
     return store_class
@@ -104,13 +104,12 @@ def error(class_list):
 
 
 def save(data):
-    to_json_str_save = '{'
-
+    json_list_save = []
     with open(input('請輸入檔名:') + '.json', 'wt', encoding = 'utf-8') as output:
-        for num, item in enumerate(data):
-            to_json_str_save += (str(num) + ':{' + str(item) + '},')
-      
-        output.write(json.dumps(to_json_str_save[0:len(to_json_str_save)] + '{', ensure_ascii = False))
+        for item in data:
+            json_list_save.append(str(item))
+             
+        output.write(json_list_save,  ensure_ascii = False)
         
 def output_data(data):
     for item in data:
@@ -148,5 +147,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
 
 
