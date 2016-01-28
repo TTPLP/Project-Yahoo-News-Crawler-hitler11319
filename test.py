@@ -1,5 +1,7 @@
 from datetime import datetime
+import requests
 import unittest
+import re
 import os
 
 import news
@@ -47,3 +49,24 @@ class News_mathod_test(unittest.TestCase):
         for item in self.news.search_topic(keyword):
             self.assertIn('hello', item.topic)
 
+    def test_againdeal(self):
+        firstweb = requests.get('https://tw.news.yahoo.com/society/')
+        firstweb.encoding = 'utf-8'
+        book = firstweb.text
+  
+        m = re.findall('<a href=\"/.*html\" class=\"title \"', book)    #m is search all urs list 
+
+        url_list = [crawler.dealstr(m)[0]]
+        base_url = 'https://tw.news.yahoo.com/'
+
+
+        with open('t.json', "wt", encoding = 'utf-8') as output:
+            class_list = crawler.againdeal(url_list, output, base_url)
+
+        with open('t.json', 'rt', encoding = 'utf-8') as result:
+            self.assertNotEqual(len(result.read()), 0)
+        
+        os.remove('t.json')
+
+# use 'python -m unittest test.py' to test
+#or use 'notetests test.py' to test in the cmd 
