@@ -1,3 +1,5 @@
+https://travis-ci.org/TTPLP/Project-Yahoo-News-Crawler-hitler11319.svg?branch=master
+
 # 專案內容
 - 在yahoo的社會新聞中，把其中的新聞項目全部讀檔，並輸出標題、作者、日期、內文。
 
