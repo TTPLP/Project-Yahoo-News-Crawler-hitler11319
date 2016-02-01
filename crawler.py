@@ -61,7 +61,7 @@ def againdeal(url_list, output, base_url):
 
             store_class.append(news.News(topic, author, date, text))
 
-            json_list.append(str(store_class.news[i - 1]))
+            json_list.append(store_class.news[i - 1].toJson())
 
             print('第', i, '則新聞已擷取完')
             i += 1
@@ -107,7 +107,7 @@ def save(data):
     json_list_save = []
     with open(input('請輸入檔名:') + '.json', 'wt', encoding = 'utf-8') as output:
         for item in data:
-            json_list_save.append(str(item))
+            json_list_save.append(item.toJson())
              
         output.write(json_list_save,  ensure_ascii = False)
         
@@ -147,7 +147,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
 
 
