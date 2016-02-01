@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import json
 
 class News:
     def __init__(self, topic, author, datetime, text):
@@ -17,6 +17,9 @@ class News:
             datetime  =  self.datetime, 
             text  =  self.text
         )
+
+    def toJson(self):
+        return {'topic': self.topic, 'author': self.author, 'datetime': str(self.datetime), 'text': self.text}   #json not datetime, so use str()
 
 class List_news():
     def __init__(self, default = None):
@@ -62,9 +65,5 @@ class List_news():
 
     def search_topic(self, keyword):
         return self.filter(lambda item: keyword in item.topic)
-
-
-
-
 
 
