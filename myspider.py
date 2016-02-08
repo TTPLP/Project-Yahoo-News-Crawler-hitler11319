@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+
 import threading
 import requests
 import json
@@ -14,14 +15,14 @@ class News:
 
     def __str__(self):
         return 'topic:{topic} , author:{author} , datetime:{datetime} , text:{text} '.format(
-            topic  =  self.topic,  
-            author  =  self.author,  
-            datetime  =  self.datetime, 
-            text  =  self.text
+            topic = self.topic,  
+            author = self.author,  
+            datetime = self.datetime, 
+            text = self.text
         )
 
     def toJson(self):
-        return {'topic': self.topic, 'author': self.author, 'datetime': str(self.datetime), 'text': self.text}
+        return json.dumps({'topic': self.topic, 'author': self.author, 'datetime': str(self.datetime), 'text': self.text}, ensure_ascii = False)
 
 
 
@@ -87,11 +88,11 @@ class Spider:
 
             print('第', len(self.data), '則新聞已擷取完')
         except:
-            pass
+            raise UnicodeEncodeError
 
     def save(self, data):
         with open('items.json', 'wt', encoding = 'utf-8') as output:
-            output.write(data)
+            output.write(json.dumps(data, ensure_ascii = False))
 
     def start(self):
         for channel in self.channels:
@@ -103,19 +104,6 @@ class Spider:
 
         #until thread.start() end , run
         thread.join()
-        self.save(json.dumps(self.data, ensure_ascii = False))
+        self.save(self.data)
 
             
-        
-
-        
-
-    
-
-        
-
-        
-
-    
-
-    
