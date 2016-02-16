@@ -43,11 +43,14 @@ class Spider:
     def start(self):
         rlock = threading.RLock()
 
-        for channel in Channel().channels:
-            rlock.acquire()
+        rlock.acquire()
+        
+        for channel in Channel().channels:           
             thread = threading.Thread(target = Channel().crawl, args = (channel, self.first_url, ))
             thread.start()
-            rlock.release()
+            
+        rlock.release()
+        
 
 class Channel(Spider):
     def __init__(self, channel = []):
@@ -76,11 +79,13 @@ class Channel(Spider):
 
         #every channel have own crawl url data
         rlock = threading.RLock()
-        for items in store:
-            rlock.acquire()
+        rlock.acquire()
+        
+        for items in store:           
             thread1 = threading.Thread(target = Page().crawl, args = (items, first_url, ))
             thread1.start()
-            rlock.release()
+
+        rlock.release()
             
 
         return Page().url_list
@@ -144,3 +149,4 @@ class Page(Spider):
         return self.url_list.append(obj)
 
                
+        
