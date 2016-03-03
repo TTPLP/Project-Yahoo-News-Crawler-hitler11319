@@ -65,15 +65,11 @@ class Channel(Spider):
         data = super().crawl(url)
         link = re.findall('<a href=\"/.*html\" class=\"title \"', data)
 
-        # as Yahoo_news_crawler/crawler.py dealstr() same 
-        for y in range(0, len(link)): 
-            link[y] = link[y].replace('html', ' + ').replace('\"/', ' + ').split(' + ')  
-
-        for item in link: 
-            for it in range(0, len(item)):
-                if item[it][-1] == '.':
-                    Page().append_url(item[it])
-                    store.append(item[it])
+        #\D+ replace search more not-number-str, and [^a href="/] is let a href=" not appear, and \d+ replace search more number-str, (?=.html) is search str that have '.html' end str   
+        for item in link:
+            for goal in re.findall(r'\D[^a href="/]+\d+(?=.html)', item):
+                Page().append_url(goal.replace('/', '') + '.')
+                store.append(goal.replace('/', '') + '.')
 
 
 
@@ -149,4 +145,3 @@ class Page(Spider):
         return self.url_list.append(obj)
 
                
-        
