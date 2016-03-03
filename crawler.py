@@ -6,17 +6,14 @@ import re
 import news
 
 
-def dealstr(url):
+def dealstr(data):
+    #\D+ replace search more not-number-str, and [^a href="/] is let a href=" not appear, and \d+ replace search more number-str, (?=.html) is search str that have '.html' end str
     get_url = []
-    # this is use "html" and " "/  " to split the str ,  let me gain the url(ps:but get the data is[[1, 2], [2, 3]] ,  so have 2 floor )
-    for y in range(0, len(url)): 
-        url[y] = url[y].replace('html', ' + ', 100).replace('\"/', ' + ', 100).split(' + ')  
+    
+    for item in data:
+        for goal in re.findall(r'\D[^a href="/]+\d+(?=.html)', item):
+            get_url.append(goal.replace('/', '') + '.')
 
-    # get the url ,  because it have 2 floor , so use 2 for. And get the url store in url_list
-    for item in url: 
-        for it in range(0, len(item)):
-            if item[it][-1] == '.':
-                get_url.append(item[it])
 
     return get_url
 
@@ -61,7 +58,7 @@ def againdeal(url_list, output, base_url):
 
             store_class.append(news.News(topic, author, date, text))
 
-            json_list.append(store_class.news[i - 1].toJson())
+            json_list.append(store_class.news[i - 1].toDict())
 
             print('第', i, '則新聞已擷取完')
             i += 1
@@ -107,7 +104,7 @@ def save(data):
     json_list_save = []
     with open(input('請輸入檔名:') + '.json', 'wt', encoding = 'utf-8') as output:
         for item in data:
-            json_list_save.append(item.toJson())
+            json_list_save.append(item.toDict())
              
         output.write(json_list_save,  ensure_ascii = False)
         
@@ -147,5 +144,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
