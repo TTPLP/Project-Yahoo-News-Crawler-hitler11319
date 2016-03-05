@@ -65,23 +65,21 @@ class Channel(Spider):
         data = super().crawl(url)
         link = re.findall('<a href=\"/.*html\" class=\"title \"', data)
 
-        #\D+ replace search more not-number-str, and [^a href="/] is let a href=" not appear, and \d+ replace search more number-str, (?=.html) is search str that have '.html' end str   
+        #\D+ replace search more not-number-str,  and \d+ replace search more number-str, (?=.html) is search str that have '.html' end str   
         for item in link:
-            for goal in re.findall(r'\D[^a href="/]+\d+(?=.html)', item):
-                Page().append_url(goal.replace('/', '') + '.')
-                store.append(goal.replace('/', '') + '.')
-
-
+            for goal in re.findall(r'.a href="\D+\d+(?=.html)',item):
+                Page().append_url(goal.replace('<a href="/', '') + '.')
+                store.append(goal.replace('<a href="/', '') + '.')
 
         #every channel have own crawl url data
-        rlock = threading.RLock()
-        rlock.acquire()
+        rlock1 = threading.RLock()
+        rlock1.acquire()
         
         for items in store:           
             thread1 = threading.Thread(target = Page().crawl, args = (items, first_url, ))
             thread1.start()
 
-        rlock.release()
+        rlock1.release()
             
 
         return Page().url_list
@@ -135,7 +133,7 @@ class Page(Spider):
                 super().save(self.data)
         except:
             self.url_list.remove(url)   #let self.url_list long as same as self.data, so if not have data del it.
-            raise UnicodeEncodeError
+            raise TypeError
 
 
     def __len__(self):
